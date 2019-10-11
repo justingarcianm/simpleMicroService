@@ -32,6 +32,46 @@ app.post("/customer", (req, res) => {
     });
 });
 
+app.get("/customers", (req, res) => {
+  Customer.find()
+    .then(customers => {
+      res.json(customers);
+    })
+    .catch(err => {
+      if (err) {
+        throw err;
+      }
+    });
+});
+
+app.get("/customer/:id", (req, res) => {
+  Customer.findById(req.params.id)
+    .then(customer => {
+      if (customer) {
+        res.json(customer);
+      } else {
+        res.send("Invalid id");
+      }
+    })
+    .catch(err => {
+      if (err) {
+        throw err;
+      }
+    });
+});
+
+app.delete("/customer/:id", (req, res) => {
+  Customer.findOneAndRemove(req.params.id)
+    .then(() => {
+      res.send("Customer deleted from database");
+    })
+    .catch(err => {
+      if (err) {
+        throw err;
+      }
+    });
+});
+
 app.listen(5555, () => {
   console.log("Up and running -- Customers service");
 });
